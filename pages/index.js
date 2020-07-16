@@ -47,69 +47,67 @@ export default function Home({ data }) {
     <BackgroundComponent>
       <HeaderComponent />
       <Space>
-        {React.lazy(
-          <Stage
-            width={width}
-            height={height - 61}
-            draggable={true}
-            scaleX={stageScale}
-            scaleY={stageScale}
-            x={stage[0]}
-            y={stage[1]}
-            onWheel={handleWheel}
-            onDragStart={() => {}}
-            onDragEnd={() => {}}
-          >
-            <Layer>
-              <Line
-                x={0}
-                y={0}
-                points={[-200, -200, -200, 2200, 2200, 2200, 2200, -200]}
-                closed
-                stroke="white"
-                tension={0.3}
-                fill="rgba(0,0,0,0.1)"
+        <Stage
+          width={width}
+          height={height - 61}
+          draggable={true}
+          scaleX={stageScale}
+          scaleY={stageScale}
+          x={stage[0]}
+          y={stage[1]}
+          onWheel={handleWheel}
+          onDragStart={() => {}}
+          onDragEnd={() => {}}
+        >
+          <Layer>
+            <Line
+              x={0}
+              y={0}
+              points={[-200, -200, -200, 2200, 2200, 2200, 2200, -200]}
+              closed
+              stroke="white"
+              tension={0.3}
+              fill="rgba(0,0,0,0.1)"
+            />
+            {data.map((planet, index) => (
+              <PlanetComponent
+                key={index}
+                name={planet.name}
+                scale={stageScale}
+                url={require("../public/images/earth.webp")}
+                x={planet.x}
+                y={planet.y}
+                size={
+                  planet.diameter !== "unknown"
+                    ? Number(planet.diameter) * 0.005 > 200
+                      ? 200
+                      : Number(planet.diameter) * 0.005
+                    : 50
+                }
+                onClick={() =>
+                  Router.push(
+                    `/planets/${planet.url
+                      .slice(0, -1)
+                      .slice(
+                        planet.url.slice(0, -1).lastIndexOf("/") + 1,
+                        planet.url.slice(0, -1).length
+                      )}`
+                  )
+                }
+                onTap={() =>
+                  Router.push(
+                    `/planets/${planet.url
+                      .slice(0, -1)
+                      .slice(
+                        planet.url.slice(0, -1).lastIndexOf("/") + 1,
+                        planet.url.slice(0, -1).length
+                      )}`
+                  )
+                }
               />
-              {data.map((planet, index) => (
-                <PlanetComponent
-                  key={index}
-                  name={planet.name}
-                  scale={stageScale}
-                  url={require("../public/images/earth.webp")}
-                  x={planet.x}
-                  y={planet.y}
-                  size={
-                    planet.diameter !== "unknown"
-                      ? Number(planet.diameter) * 0.005 > 200
-                        ? 200
-                        : Number(planet.diameter) * 0.005
-                      : 50
-                  }
-                  onClick={() =>
-                    Router.push(
-                      `/planets/${planet.url
-                        .slice(0, -1)
-                        .slice(
-                          planet.url.slice(0, -1).lastIndexOf("/") + 1,
-                          planet.url.slice(0, -1).length
-                        )}`
-                    )
-                  }
-                  onTap={() =>
-                    Router.push(
-                      `/planets/${planet.url
-                        .slice(0, -1)
-                        .slice(
-                          planet.url.slice(0, -1).lastIndexOf("/") + 1,
-                          planet.url.slice(0, -1).length
-                        )}`
-                    )
-                  }
-                />
-              ))}
-            </Layer>
-          </Stage>
-        )}
+            ))}
+          </Layer>
+        </Stage>
       </Space>
     </BackgroundComponent>
   );
