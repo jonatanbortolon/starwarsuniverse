@@ -86,11 +86,11 @@ function Planets({ data }) {
                           href="/films/[id]"
                           as={
                             "/films/" +
-                            homeworld[1]
+                            element[1]
                               .slice(0, -1)
                               .slice(
-                                homeworld[1].slice(0, -1).lastIndexOf("/") + 1,
-                                homeworld[1].slice(0, -1).length
+                                element[1].slice(0, -1).lastIndexOf("/") + 1,
+                                element[1].slice(0, -1).length
                               )
                           }
                         >
