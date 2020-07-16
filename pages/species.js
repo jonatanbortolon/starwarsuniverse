@@ -5,7 +5,7 @@ import HeaderComponent from "../src/components/HeaderComponent";
 
 import { List, Item, Infos } from "../src/components/ListComponent";
 
-import Router from "next/router";
+import Link from "next/link";
 
 function Species({ data }) {
   return (
@@ -13,25 +13,25 @@ function Species({ data }) {
       <HeaderComponent />
       <List>
         {data.map((element) => (
-          <Item
-            key={element.name}
-            onClick={() =>
-              Router.push(
-                "/species/" +
-                  element.url
-                    .slice(0, -1)
-                    .slice(
-                      element.url.slice(0, -1).lastIndexOf("/") + 1,
-                      element.url.slice(0, -1).length
-                    )
-              )
+          <Link
+            href="/species/[id]"
+            as={
+              "/species/" +
+              element.url
+                .slice(0, -1)
+                .slice(
+                  element.url.slice(0, -1).lastIndexOf("/") + 1,
+                  element.url.slice(0, -1).length
+                )
             }
           >
-            <p>{element.name}</p>
-            <Infos>
-              <p>classification: {element.classification}</p>
-            </Infos>
-          </Item>
+            <Item key={element.name}>
+              <p>{element.name}</p>
+              <Infos>
+                <p>classification: {element.classification}</p>
+              </Infos>
+            </Item>
+          </Link>
         ))}
       </List>
     </BackgroundComponent>

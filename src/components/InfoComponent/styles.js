@@ -17,10 +17,16 @@ export const Box = styled.div`
   background: #fff;
   border-radius: 10px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-transform: capitalize;
+  overflow-x: auto;
 
   > :nth-child(1) {
+    margin-bottom: 50px;
+    margin-top: 30px;
+  }
+
+  > :nth-last-child() {
     margin-bottom: 50px;
   }
 
@@ -46,8 +52,7 @@ export const Box = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0;
-    overflow-y: auto;
-    padding: 20px 0 80px 0;
+    padding: 0 0 80px 0;
     justify-content: flex-start;
 
     > h1 {

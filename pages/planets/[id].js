@@ -4,6 +4,7 @@ import axios from "axios";
 import BackgroundComponent from "../../src/components/BackgroundComponent";
 import HeaderComponent from "../../src/components/HeaderComponent";
 import InfoComponent from "../../src/components/InfoComponent";
+import Link from "next/link";
 
 function Planets({ data }) {
   const [residents, changeResidents] = useState([["", ""]]);
@@ -63,9 +64,10 @@ function Planets({ data }) {
                   <h3 key={key}>{`${key.replace(/_/i, " ")}:`}</h3>
                   {index === 9
                     ? residents.map((element) => (
-                        <a
+                        <Link
                           key={element[0]}
-                          href={
+                          href="/characters/[id]"
+                          as={
                             "/characters/" +
                             element[1]
                               .slice(0, -1)
@@ -75,13 +77,25 @@ function Planets({ data }) {
                               )
                           }
                         >
-                          {element[0]}
-                        </a>
+                          <a>{element[0]}</a>
+                        </Link>
                       ))
                     : films.map((element) => (
-                        <a key={element[0]} href={element[1]}>
-                          {element[0]}
-                        </a>
+                        <Link
+                          key={element[0]}
+                          href="/films/[id]"
+                          as={
+                            "/films/" +
+                            homeworld[1]
+                              .slice(0, -1)
+                              .slice(
+                                homeworld[1].slice(0, -1).lastIndexOf("/") + 1,
+                                homeworld[1].slice(0, -1).length
+                              )
+                          }
+                        >
+                          <a>{element[0]}</a>
+                        </Link>
                       ))}
                 </Fragment>
               );

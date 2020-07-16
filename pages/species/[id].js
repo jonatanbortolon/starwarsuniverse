@@ -4,6 +4,7 @@ import axios from "axios";
 import BackgroundComponent from "../../src/components/BackgroundComponent";
 import HeaderComponent from "../../src/components/HeaderComponent";
 import InfoComponent from "../../src/components/InfoComponent";
+import Link from "next/link";
 
 function SpeciesId({ data }) {
   const [homeworld, changeHomeworld] = useState(["", ""]);
@@ -65,9 +66,10 @@ function SpeciesId({ data }) {
                 return (
                   <h3 key={key}>
                     {`${key.replace(/_/i, " ")}: `}
-                    <a
+                    <Link
                       key={homeworld[0]}
-                      href={
+                      href="/planets/[id]"
+                      as={
                         "/planets/" +
                         homeworld[1]
                           .slice(0, -1)
@@ -77,8 +79,8 @@ function SpeciesId({ data }) {
                           )
                       }
                     >
-                      {homeworld[0]}
-                    </a>
+                      <a>{homeworld[0]}</a>
+                    </Link>
                   </h3>
                 );
               } else {
@@ -94,14 +96,27 @@ function SpeciesId({ data }) {
                   <h3 key={key}>{`${key.replace(/_/i, " ")}:`}</h3>
                   {index === 11
                     ? films.map((element) => (
-                        <a key={element[0]} href={element[1]}>
-                          {element[0]}
-                        </a>
+                        <Link
+                          key={element[0]}
+                          href="/films/[id]"
+                          as={
+                            "/films/" +
+                            homeworld[1]
+                              .slice(0, -1)
+                              .slice(
+                                homeworld[1].slice(0, -1).lastIndexOf("/") + 1,
+                                homeworld[1].slice(0, -1).length
+                              )
+                          }
+                        >
+                          <a>{element[0]}</a>
+                        </Link>
                       ))
                     : characters.map((element) => (
-                        <a
+                        <Link
                           key={element[0]}
-                          href={
+                          href="/characters/[id]"
+                          as={
                             "/characters/" +
                             element[1]
                               .slice(0, -1)
@@ -111,8 +126,8 @@ function SpeciesId({ data }) {
                               )
                           }
                         >
-                          {element[0]}
-                        </a>
+                          <a>{element[0]}</a>
+                        </Link>
                       ))}
                 </Fragment>
               );

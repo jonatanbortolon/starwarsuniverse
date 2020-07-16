@@ -4,7 +4,8 @@ import BackgroundComponent from "../src/components/BackgroundComponent";
 import HeaderComponent from "../src/components/HeaderComponent";
 
 import { List, Item, Infos } from "../src/components/ListComponent";
-import Router from "next/router";
+
+import Link from "next/link";
 
 function Characters({ data }) {
   return (
@@ -12,36 +13,36 @@ function Characters({ data }) {
       <HeaderComponent />
       <List>
         {data.map((element) => (
-          <Item
-            key={element.name}
-            onClick={() =>
-              Router.push(
-                "/characters/" +
-                  element.url
-                    .slice(0, -1)
-                    .slice(
-                      element.url.slice(0, -1).lastIndexOf("/") + 1,
-                      element.url.slice(0, -1).length
-                    )
-              )
+          <Link
+            href="/characters/[id]"
+            as={
+              "/characters/" +
+              element.url
+                .slice(0, -1)
+                .slice(
+                  element.url.slice(0, -1).lastIndexOf("/") + 1,
+                  element.url.slice(0, -1).length
+                )
             }
           >
-            <p>{element.name}</p>
-            <Infos>
-              <p>
-                height:{" "}
-                {element.height === "unknown"
-                  ? element.height
-                  : element.height / 100 + "m"}
-              </p>
-              <p>
-                mass:{" "}
-                {element.mass === "unknown"
-                  ? element.mass
-                  : element.mass + "Kg"}
-              </p>
-            </Infos>
-          </Item>
+            <Item key={element.name}>
+              <p>{element.name}</p>
+              <Infos>
+                <p>
+                  height:{" "}
+                  {element.height === "unknown"
+                    ? element.height
+                    : element.height / 100 + "m"}
+                </p>
+                <p>
+                  mass:{" "}
+                  {element.mass === "unknown"
+                    ? element.mass
+                    : element.mass + "Kg"}
+                </p>
+              </Infos>
+            </Item>
+          </Link>
         ))}
       </List>
     </BackgroundComponent>

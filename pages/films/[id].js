@@ -7,24 +7,29 @@ import InfoComponent from "../../src/components/InfoComponent";
 
 import Link from "next/link";
 
-function CharactersId({ data }) {
-  const [homeworld, changeHomeworld] = useState(["", ""]);
+function FilmsId({ data }) {
+  const [people, changePeople] = useState([["", ""]]);
   const [species, changeSpecies] = useState([["", ""]]);
-  const [films, changeFilms] = useState([["", ""]]);
+  const [planets, changePlanets] = useState([["", ""]]);
   const [vehicles, changeVehicles] = useState([["", ""]]);
   const [starships, changeStarships] = useState([["", ""]]);
 
   async function getInfos() {
+    let peopleHandler = [];
     let speciesHandler = [];
-    let filmsHandler = [];
+    let planetsHandler = [];
     let vehiclesHandler = [];
     let starshipsHandler = [];
 
     await axios
-      .get(data.homeworld)
-      .then((response) =>
-        changeHomeworld([response.data.name, response.data.url])
+      .all(data.characters.map((element) => axios.get(element)))
+      .then((elements) =>
+        elements.forEach((element) => {
+          peopleHandler.push([element.data.name, element.data.url]);
+        })
       );
+
+    changePeople(peopleHandler);
 
     await axios
       .all(data.species.map((element) => axios.get(element)))
@@ -37,14 +42,14 @@ function CharactersId({ data }) {
     changeSpecies(speciesHandler);
 
     await axios
-      .all(data.films.map((element) => axios.get(element)))
+      .all(data.planets.map((element) => axios.get(element)))
       .then((elements) =>
         elements.forEach((element) => {
-          filmsHandler.push([element.data.title, element.data.url]);
+          planetsHandler.push([element.data.name, element.data.url]);
         })
       );
 
-    changeFilms(filmsHandler);
+    changePlanets(planetsHandler);
 
     await axios
       .all(data.vehicles.map((element) => axios.get(element)))
@@ -84,64 +89,23 @@ function CharactersId({ data }) {
                   Object.values(data)[0]
                 }`}</h1>
               );
-            } else if (index < 9) {
-              if (index === 8) {
-                return (
-                  <h3 key={key}>
-                    {`${key.replace(/_/i, " ")}: `}
-                    <Link
-                      key={homeworld[0]}
-                      href="/planets/[id]"
-                      as={
-                        "/planets/" +
-                        homeworld[1]
-                          .slice(0, -1)
-                          .slice(
-                            homeworld[1].slice(0, -1).lastIndexOf("/") + 1,
-                            homeworld[1].slice(0, -1).length
-                          )
-                      }
-                    >
-                      <a>{homeworld[0]}</a>
-                    </Link>
-                  </h3>
-                );
-              } else {
-                return (
-                  <h3 key={key}>{`${key.replace(/_/i, " ")}: ${
-                    Object.values(data)[index]
-                  }`}</h3>
-                );
-              }
-            } else if (index <= 12) {
+            } else if (index < 6) {
+              return (
+                <h3 key={key}>{`${key.replace(/_/i, " ")}: ${
+                  Object.values(data)[index]
+                }`}</h3>
+              );
+            } else if (index <= 10) {
               return (
                 <Fragment key={"info " + key}>
                   <h3 key={key}>{`${key.replace(/_/i, " ")}:`}</h3>
-                  {index === 9
-                    ? films.map((element) => (
+                  {index === 6
+                    ? people.map((element) => (
                         <Link
                           key={element[0]}
-                          href="/films/[id]"
+                          href="/characters/[id]"
                           as={
-                            "/films/" +
-                            homeworld[1]
-                              .slice(0, -1)
-                              .slice(
-                                homeworld[1].slice(0, -1).lastIndexOf("/") + 1,
-                                homeworld[1].slice(0, -1).length
-                              )
-                          }
-                        >
-                          <a>{element[0]}</a>
-                        </Link>
-                      ))
-                    : index === 10
-                    ? species.map((element) => (
-                        <Link
-                          key={element[0]}
-                          href="/species/[id]"
-                          as={
-                            "/species/" +
+                            "/characters/" +
                             element[1]
                               .slice(0, -1)
                               .slice(
@@ -153,7 +117,43 @@ function CharactersId({ data }) {
                           <a>{element[0]}</a>
                         </Link>
                       ))
-                    : index === 11
+                    : index === 7
+                    ? planets.map((element) => (
+                        <Link
+                          key={element[0]}
+                          href="/planets/[id]"
+                          as={
+                            "/planets/" +
+                            element[1]
+                              .slice(0, -1)
+                              .slice(
+                                element[1].slice(0, -1).lastIndexOf("/") + 1,
+                                element[1].slice(0, -1).length
+                              )
+                          }
+                        >
+                          <a>{element[0]}</a>
+                        </Link>
+                      ))
+                    : index === 8
+                    ? starships.map((element) => (
+                        <Link
+                          key={element[0]}
+                          href="/starships/[id]"
+                          as={
+                            "/starships/" +
+                            element[1]
+                              .slice(0, -1)
+                              .slice(
+                                element[1].slice(0, -1).lastIndexOf("/") + 1,
+                                element[1].slice(0, -1).length
+                              )
+                          }
+                        >
+                          <a>{element[0]}</a>
+                        </Link>
+                      ))
+                    : index === 9
                     ? vehicles.map((element) => (
                         <Link
                           key={element[0]}
@@ -171,12 +171,12 @@ function CharactersId({ data }) {
                           <a>{element[0]}</a>
                         </Link>
                       ))
-                    : starships.map((element) => (
+                    : species.map((element) => (
                         <Link
                           key={element[0]}
-                          href="/starships/[id]"
+                          href="/species/[id]"
                           as={
-                            "/starships/" +
+                            "/species/" +
                             element[1]
                               .slice(0, -1)
                               .slice(
@@ -202,7 +202,7 @@ export async function getStaticPaths() {
   let quary = [];
   let pages = 1;
 
-  await axios.get(`https://swapi.dev/api/people/?page=1`).then((response) => {
+  await axios.get(`https://swapi.dev/api/films/?page=1`).then((response) => {
     pages =
       response.data.count.toString().length > 1
         ? response.data.count.toString()[1] !== "0"
@@ -212,7 +212,7 @@ export async function getStaticPaths() {
   });
 
   for (let index = 1; index <= pages; index++) {
-    quary.push(axios.get(`https://swapi.dev/api/people/?page=${index}`));
+    quary.push(axios.get(`https://swapi.dev/api/films/?page=${index}`));
   }
 
   await (await axios.all(quary)).forEach((i) => {
@@ -242,7 +242,7 @@ export async function getStaticProps({ params }) {
   let data = [];
 
   await axios
-    .get(`https://swapi.dev/api/people/${params.id}`)
+    .get(`https://swapi.dev/api/films/${params.id}`)
     .then((response) => {
       data = response.data;
     })
@@ -255,4 +255,4 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default CharactersId;
+export default FilmsId;

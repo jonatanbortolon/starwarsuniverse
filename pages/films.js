@@ -5,18 +5,33 @@ import HeaderComponent from "../src/components/HeaderComponent";
 
 import { List, Item, Infos } from "../src/components/ListComponent";
 
+import Link from "next/link";
+
 function Films({ data }) {
   return (
     <BackgroundComponent>
       <HeaderComponent />
       <List>
         {data.map((element) => (
-          <Item key={element.title}>
-            <p>{element.title}</p>
-            <Infos>
-              <p>director: {element.director}</p>
-            </Infos>
-          </Item>
+          <Link
+            href="/films/[id]"
+            as={
+              "/films/" +
+              element.url
+                .slice(0, -1)
+                .slice(
+                  element.url.slice(0, -1).lastIndexOf("/") + 1,
+                  element.url.slice(0, -1).length
+                )
+            }
+          >
+            <Item key={element.title}>
+              <p>{element.title}</p>
+              <Infos>
+                <p>director: {element.director}</p>
+              </Infos>
+            </Item>
+          </Link>
         ))}
       </List>
     </BackgroundComponent>
