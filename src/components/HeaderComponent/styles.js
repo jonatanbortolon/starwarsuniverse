@@ -85,7 +85,7 @@ export const NavButton = styled.div`
   }
 
   @media (max-width: 521px) {
-    width: 45px;
+    width: 55px;
     margin: 0 auto;
 
     > h1 {
