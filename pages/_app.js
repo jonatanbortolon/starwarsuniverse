@@ -33,9 +33,9 @@ export default class _App extends App {
             description: "Everything about Star Wars",
             images: [
               {
-                url: "https://starwarsuniverse.vercel.app/images/logo.webp",
+                url: "https://starwarsuniverse.vercel.app/images/content.webp",
                 width: 500,
-                height: 250,
+                height: 500,
                 alt: "Star Wars Universe",
               },
             ],
