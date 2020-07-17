@@ -28,7 +28,7 @@ function AboutComponent() {
       <Footer>
         <p>
           Made with ❤️ with{" "}
-          <a href="https://google.com" target="_blank">
+          <a href="https://jonatanbortolon.vercel.app" target="_blank">
             Jonatan Gabriel Bortolon
           </a>
         </p>
